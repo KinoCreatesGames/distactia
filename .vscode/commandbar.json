@@ -1,0 +1,58 @@
+{
+	"skipTerminateQuickPick": true,
+	"skipSwitchToOutput": false,
+	"skipErrorMessage": true,
+	"commands": [
+		{
+			"text": "🍊 HL",
+			"color": "orange",
+			"commandType":"exec",
+			"command": "haxe hl.hxml",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -10
+		},
+		{
+			"text": "Run HL",
+			"color": "orange",
+			"command": "hl bin/client.hl",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -11
+		},
+		{
+			"text": "☕ JS",
+			"color": "yellow",
+			"commandType":"exec",
+			"command": "haxe js.hxml",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -20
+		},
+		{
+			"text": "Run JS",
+			"color": "yellow",
+			"command": "start js.html",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -21
+		},
+		{
+			"text": "🅰️ Lang",
+			"color": "white",
+			"commandType":"palette",
+			"command": "workbench.action.tasks.runTask|Lang",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -40
+		},
+		{
+			"text": "📦 Redist",
+			"color": "lightgreen",
+			"command": "haxelib run redistHelper hl.dx.hxml hl.sdl.hxml js.hxml -o redist -p MyGame",
+			"alignment": "right",
+			"skipTerminateQuickPick": false,
+			"priority": -50
+		}
+	]
+}

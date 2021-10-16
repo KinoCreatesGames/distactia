@@ -1,0 +1,6 @@
+# @install: lix --silent download "haxelib:/heaps-aseprite#0.1.2" into heaps-aseprite/0.1.2/haxelib
+-lib ase
+-cp ${HAXE_LIBCACHE}/heaps-aseprite/0.1.2/haxelib/src
+-D heaps-aseprite=0.1.2
+# Adds .aseprite file handling to hxd.res.Config
+--macro aseprite.Macros.init()

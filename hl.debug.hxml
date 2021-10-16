@@ -1,0 +1,3 @@
+# Whether to use DirectX or SDL when running Heaps or during debugging.
+hl.sdl.hxml
+-debug
