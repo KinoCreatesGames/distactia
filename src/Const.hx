@@ -11,7 +11,7 @@ class Const {
    * The size of the grid used in game when it comes to how collisions are checked within the engine.
    * 
    */
-  public static inline var GRID = 8;
+  public static inline var GRID = 16;
 
   public static inline var INFINITE = 999999;
 
@@ -29,7 +29,7 @@ class Const {
   static inline function get_SCALE() {
     // can be replaced with another way to determine the game scaling
     // Updating this will change the way the game is viewed in the viewport.
-    return dn.heaps.Scaler.bestFit_i(128, 128);
+    return dn.heaps.Scaler.bestFit_i(256, 256);
   }
 
   /** Specific scaling for top UI elements **/

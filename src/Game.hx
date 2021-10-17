@@ -36,16 +36,16 @@ class Game extends dn.Process {
     scroller.filter = new h2d.filter.ColorMatrix(); // force rendering for pixel perfect
 
     camera = new Camera();
+    hud = new ui.Hud();
     level = new Level();
     fx = new Fx();
-    hud = new ui.Hud();
 
     Process.resizeAll();
     trace(Lang.t._("Game is ready."));
   }
 
   public inline function invalidateHud() {
-    if (!hud.destroyed) {
+    if (hud != null && !hud.destroyed) {
       hud.invalidate();
     }
   }

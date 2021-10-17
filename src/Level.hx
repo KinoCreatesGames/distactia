@@ -1,3 +1,8 @@
+import en.obstacles.Hazard;
+import en.Thief;
+import en.Cutter;
+import en.Player;
+
 class Level extends dn.Process {
   var game(get, never):Game;
 
@@ -35,9 +40,35 @@ class Level extends dn.Process {
 
   var invalidated = true;
 
+  public var player:en.Player;
+  public var vassalGrp:Array<en.Vassal>;
+  public var hazardGrp:Array<Hazard>;
+
   public function new() {
     super(Game.ME);
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
+    createGroups();
+    createEntities();
+  }
+
+  public function createGroups() {
+    vassalGrp = [];
+    hazardGrp = [];
+  }
+
+  public function createEntities() {
+    player = new Player(0, 0);
+
+    // Add Random Vassals
+    vassalGrp.push(new Cutter(8, 8));
+    vassalGrp.push(new Cutter(4, 8));
+    vassalGrp.push(new Thief(5, 6));
+  }
+
+  public function collidedVassal(x:Int, y:Int) {
+    return vassalGrp.filter((vassal) -> vassal.cx == x && vassal.cy == y
+      && vassal.isAlive())
+      .first();
   }
 
   /** TRUE if given coords are in level bounds **/
@@ -75,5 +106,19 @@ class Level extends dn.Process {
       invalidated = false;
       render();
     }
+  }
+
+  override function onDispose() {
+    if (player != null) {
+      player.dispose();
+    }
+
+    for (follower in vassalGrp) {
+      follower.dispose();
+    }
+    for (hazard in hazardGrp) {
+      hazard.dispose();
+    }
+    super.onDispose();
   }
 }
