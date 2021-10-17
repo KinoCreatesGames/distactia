@@ -18,6 +18,7 @@ class Hud extends dn.Process {
 
   var flow:h2d.Flow;
   var invalidated = true;
+  var powerText:h2d.Text;
 
   public function new() {
     super(Game.ME);
@@ -26,6 +27,15 @@ class Hud extends dn.Process {
     root.filter = new h2d.filter.ColorMatrix(); // force pixel perfect rendering
 
     flow = new h2d.Flow(root);
+    flow.layout = Vertical;
+    flow.padding = 8;
+    setupUI();
+  }
+
+  public function setupUI() {
+    powerText = new h2d.Text(Assets.fontSmall, flow);
+    powerText.textColor = 0xffffff;
+    powerText.text = '0';
   }
 
   override function onResize() {
@@ -36,7 +46,16 @@ class Hud extends dn.Process {
   public inline function invalidate()
     invalidated = true;
 
-  function render() {}
+  function render() {
+    renderPower();
+  }
+
+  public function renderPower() {
+    // Updates the power text in game
+    if (level != null && level.player != null) {
+      powerText.text = 'Power ${level.player.power}';
+    }
+  }
 
   override function postUpdate() {
     super.postUpdate();

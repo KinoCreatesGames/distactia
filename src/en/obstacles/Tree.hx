@@ -6,5 +6,5 @@ class Tree extends Obstacle {
     setSpr();
   }
 
-  public function setSpr() {}
+  public inline function setSpr() {}
 }
