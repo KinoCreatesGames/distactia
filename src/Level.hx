@@ -1,7 +1,7 @@
-import en.obstacles.Hazard;
 import en.Thief;
 import en.Cutter;
 import en.Player;
+import en.obstacles.Obstacle;
 
 class Level extends dn.Process {
   var game(get, never):Game;
@@ -42,7 +42,8 @@ class Level extends dn.Process {
 
   public var player:en.Player;
   public var vassalGrp:Array<en.Vassal>;
-  public var hazardGrp:Array<Hazard>;
+
+  public var hazards:Array<Obstacle>;
 
   public function new() {
     super(Game.ME);
@@ -53,7 +54,7 @@ class Level extends dn.Process {
 
   public function createGroups() {
     vassalGrp = [];
-    hazardGrp = [];
+    hazards = [];
   }
 
   public function createEntities() {
@@ -68,6 +69,12 @@ class Level extends dn.Process {
   public function collidedVassal(x:Int, y:Int) {
     return vassalGrp.filter((vassal) -> vassal.cx == x && vassal.cy == y
       && vassal.isAlive())
+      .first();
+  }
+
+  public function collidedObstacle(x:Int, y:Int) {
+    return hazards.filter((hazard) -> hazard.cx == x && hazard.cy == y
+      && hazard.isAlive())
       .first();
   }
 
@@ -109,6 +116,7 @@ class Level extends dn.Process {
   }
 
   override function onDispose() {
+    super.onDispose();
     if (player != null) {
       player.dispose();
     }
@@ -116,9 +124,8 @@ class Level extends dn.Process {
     for (follower in vassalGrp) {
       follower.dispose();
     }
-    for (hazard in hazardGrp) {
-      hazard.dispose();
+    for (el in hazards) {
+      el.dispose();
     }
-    super.onDispose();
   }
 }

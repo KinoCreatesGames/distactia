@@ -1,5 +1,6 @@
 package en;
 
+import en.obstacles.Tree;
 import GameTypes.Facing;
 import GameTypes.Talent;
 import dn.heaps.Controller.ControllerAccess;
@@ -99,5 +100,21 @@ class Player extends Entity {
     vassals.push(vassal);
     vassal.cx = lastPrevX;
     vassal.cy = lastPrevY;
+  }
+
+  public function obstacleCollisions() {
+    var obstacle = level.collidedObstacle(cx, cy);
+    if (obstacle != null) {
+      var obstacleType = Type.getClass(obstacle);
+      switch (obstacleType) {
+        case Tree:
+          // Cut down tree if have cutting talent
+          if (talents.contains(CUT)) {
+            obstacle.destroy();
+          }
+        case _:
+          // Do nothing
+      }
+    }
   }
 }
