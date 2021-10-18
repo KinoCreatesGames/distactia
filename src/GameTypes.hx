@@ -2,8 +2,22 @@
  * Abilities that each vassal has in the game.
  */
 enum abstract Talent(String) from String to String {
+  var NONE:String = 'none';
+
+  /**
+   * Allows you to cut down trees.
+   */
   var CUT:String = 'cut';
+
+  /**
+   * Allows you to go through gates
+   */
   var LOCKPICK:String = 'lockpick';
+
+  /**
+   * Boosts your power by a factor of 2
+   */
+  var COMMANDER:String = 'commander';
 }
 
 enum abstract Facing(String) from String to String {

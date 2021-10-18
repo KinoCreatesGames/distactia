@@ -23,9 +23,12 @@ class Game extends dn.Process {
   /** UI **/
   public var hud:ui.Hud;
 
+  public var proj:LDTkProj;
+
   public function new() {
     super(Main.ME);
     ME = this;
+    proj = new LDTkProj();
     ca = Main.ME.controller.createAccess("game");
     ca.setLeftDeadZone(0.2);
     ca.setRightDeadZone(0.2);
@@ -37,7 +40,7 @@ class Game extends dn.Process {
 
     camera = new Camera();
     hud = new ui.Hud();
-    level = new Level();
+    level = new Level(proj.all_levels.Level_0);
     fx = new Fx();
 
     Process.resizeAll();

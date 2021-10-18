@@ -47,12 +47,14 @@ class Player extends Entity {
     g.drawRect(0, 0, 16, 16);
     g.endFill();
     g.x -= 8;
+    g.y -= 16;
   }
 
   override function update() {
     super.update();
     updateControls();
     entityCollissions();
+    obstacleCollisions();
   }
 
   public function updateControls() {
@@ -71,7 +73,7 @@ class Player extends Entity {
       } else if (ct.downPressed() && canMove(cx, cy + MOVE_SPD)) {
         cy += MOVE_SPD;
         updateFollowers(0, MOVE_SPD);
-      } else if (ct.upPressed() && canMove(cx, cy + MOVE_SPD)) {
+      } else if (ct.upPressed() && canMove(cx, cy - MOVE_SPD)) {
         cy -= MOVE_SPD;
         updateFollowers(0, -MOVE_SPD);
       } else {
@@ -86,12 +88,18 @@ class Player extends Entity {
     if (obstacle != null) {
       var obstacleType = Type.getClass(obstacle);
       switch (obstacleType) {
-        case Tree:
+        case en.obstacles.Tree:
           // check
           return talents.contains(CUT);
+        case en.obstacles.Gate:
+          return talents.contains(LOCKPICK);
         case _:
           return true;
       }
+    }
+
+    if (level.hasAnyCollision(x, y)) {
+      return false;
     }
     return true;
   }
@@ -120,13 +128,29 @@ class Player extends Entity {
       setSquashX(0.6);
       addFollower(vassal);
     }
+
+    var enemy = level.collidedEnemy(cx, cy);
+    if (enemy != null) {
+      // Remove latest vassal and lower power
+      removeFollower();
+      enemy.destroy();
+      Game.ME.camera.shakeS(0.5, 1);
+    }
+  }
+
+  public function removeFollower() {
+    // Remove latest vassal and update current followers
+    var vassal = vassals.shift();
+    updateFollowers(cx, cy);
+    power = vassals.length;
+    updateHUD();
   }
 
   public function addFollower(vassal:Vassal) {
     vassals.push(vassal);
     vassal.cx = lastPrevX;
     vassal.cy = lastPrevY;
-    power += 1;
+    power = vassals.length;
     updateHUD();
   }
 
@@ -143,10 +167,16 @@ class Player extends Entity {
     if (obstacle != null) {
       var obstacleType = Type.getClass(obstacle);
       switch (obstacleType) {
-        case Tree:
+        case en.obstacles.Tree:
           // Cut down tree if have cutting talent
           if (talents.contains(CUT)) {
             obstacle.destroy();
+            setSquashX(0.6);
+          }
+        case en.obstacles.Gate:
+          if (talents.contains(LOCKPICK)) {
+            obstacle.destroy();
+            setSquashX(0.6);
           }
         case _:
           // Do nothing

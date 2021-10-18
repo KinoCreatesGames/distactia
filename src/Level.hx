@@ -1,3 +1,8 @@
+import en.enemy.Enemy;
+import en.obstacles.Gate;
+import en.Goal;
+import en.Commander;
+import en.obstacles.Tree;
 import en.Thief;
 import en.Cutter;
 import en.Player;
@@ -42,11 +47,16 @@ class Level extends dn.Process {
 
   public var player:en.Player;
   public var vassalGrp:Array<en.Vassal>;
+  public var enemyGrp:Array<Enemy>;
 
   public var hazards:Array<Obstacle>;
+  public var goals:Array<Goal>;
 
-  public function new() {
+  public var data:LDTkProj_Level;
+
+  public function new(level:LDTkProj_Level) {
     super(Game.ME);
+    data = level;
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
@@ -55,15 +65,52 @@ class Level extends dn.Process {
   public function createGroups() {
     vassalGrp = [];
     hazards = [];
+    goals = [];
+    enemyGrp = [];
   }
 
   public function createEntities() {
-    player = new Player(0, 0);
+    for (lPlayer in data.l_Entities.all_Player) {
+      player = new Player(lPlayer.cx, lPlayer.cy);
+    }
 
-    // Add Random Vassals
-    vassalGrp.push(new Cutter(8, 8));
-    vassalGrp.push(new Cutter(4, 8));
-    vassalGrp.push(new Thief(5, 6));
+    for (enemy in data.l_Entities.all_Patrol) {
+      enemyGrp.push(new Enemy(enemy));
+    }
+
+    for (cutter in data.l_Entities.all_Cutter) {
+      vassalGrp.push(new Cutter(cutter.cx, cutter.cy));
+    }
+
+    for (thief in data.l_Entities.all_Thief) {
+      vassalGrp.push(new Thief(thief.cx, thief.cy));
+    }
+
+    for (commander in data.l_Entities.all_Commander) {
+      vassalGrp.push(new Commander(commander.cx, commander.cy));
+    }
+
+    for (tree in data.l_Entities.all_Tree) {
+      hazards.push(new Tree(tree.cx, tree.cy));
+    }
+
+    for (gate in data.l_Entities.all_Gate) {
+      hazards.push(new Gate(gate.cx, gate.cy));
+    }
+
+    for (goal in data.l_Entities.all_Goal) {
+      goals.push(new Goal(goal.cx, goal.cy));
+    }
+  }
+
+  public function hasAnyCollision(x:Int, y:Int) {
+    return data.l_AutoBase.getInt(x, y) == 1;
+  }
+
+  public function collidedEnemy(x:Int, y:Int) {
+    return enemyGrp.filter((enemy) -> enemy.cx == x && enemy.cy == y
+      && enemy.isAlive())
+      .first();
   }
 
   public function collidedVassal(x:Int, y:Int) {
@@ -94,16 +141,11 @@ class Level extends dn.Process {
   function render() {
     // Placeholder level render
     root.removeChildren();
-    for (cx in 0...cWid)
-      for (cy in 0...cHei) {
-        var g = new h2d.Graphics(root);
-        if (cx == 0
-          || cy == 0
-          || cx == cWid - 1
-          || cy == cHei - 1) g.beginFill(0xffcc00); else
-          g.beginFill(Color.randomColor(rnd(0, 1), 0.5, 0.4));
-        g.drawRect(cx * Const.GRID, cy * Const.GRID, Const.GRID, Const.GRID);
-      }
+    // Render Map
+    var group = data.l_AutoTiles.render();
+
+    root.addChild(group);
+    dn.Process.resizeAll();
   }
 
   override function postUpdate() {
@@ -126,6 +168,10 @@ class Level extends dn.Process {
     }
     for (el in hazards) {
       el.dispose();
+    }
+
+    for (enemy in enemyGrp) {
+      enemy.dispose();
     }
   }
 }

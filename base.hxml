@@ -1,6 +1,9 @@
 -cp src
+-lib ldtk-haxe-api
 -lib castle
 -lib heaps
 -lib deepnightLibs
+-lib ase
+-lib heaps-aseprite
 -main Boot
 -dce full

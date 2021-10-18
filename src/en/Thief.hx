@@ -15,5 +15,6 @@ class Thief extends Vassal {
     g.drawRect(0, 0, 16, 16);
     g.endFill();
     g.x -= 8;
+    g.y -= 16;
   }
 }

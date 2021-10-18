@@ -1,17 +1,19 @@
-package en.obstacles;
+package en;
 
-class Tree extends Obstacle {
+/**
+ * Commander that boosts your overal
+ * power by 2.
+ */
+class Commander extends Vassal {
   public function new(x:Int, y:Int) {
     super(x, y);
+    talent = COMMANDER;
   }
 
   override function setSprite() {
-    var tile = hxd.Res.maps.map.toTile();
-    tile.setPosition(64, 0);
     var g = new h2d.Graphics(spr);
-    g.beginTileFill(0, 0, 1, 1, tile);
+    g.beginFill(0xff4400);
     g.drawRect(0, 0, 16, 16);
-    g.endFill();
     g.x -= 8;
     g.y -= 16;
   }
