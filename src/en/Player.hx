@@ -129,6 +129,7 @@ class Player extends Entity {
     var vassal = level.collidedVassal(cx, cy);
     if (vassal != null && !vassals.contains(vassal)) {
       setSquashX(0.6);
+      vassal.saved();
       addFollower(vassal);
     }
 

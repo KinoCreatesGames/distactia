@@ -18,6 +18,12 @@ enum abstract Talent(String) from String to String {
    * Boosts your power by a factor of 2
    */
   var COMMANDER:String = 'commander';
+
+  /**
+   * Allows you to swim across water tiles.
+   * Without it, you will drown or be stuck.
+   */
+  var SWIM:String = 'swim';
 }
 
 enum abstract Facing(String) from String to String {

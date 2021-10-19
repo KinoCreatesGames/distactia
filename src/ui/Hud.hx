@@ -19,6 +19,7 @@ class Hud extends dn.Process {
   var flow:h2d.Flow;
   var invalidated = true;
   var powerText:h2d.Text;
+  var timerText:h2d.Text;
 
   public function new() {
     super(Game.ME);
@@ -29,6 +30,7 @@ class Hud extends dn.Process {
     flow = new h2d.Flow(root);
     flow.layout = Vertical;
     flow.padding = 8;
+    flow.horizontalSpacing = Std.int(w() / 3);
     setupUI();
   }
 
@@ -36,6 +38,10 @@ class Hud extends dn.Process {
     powerText = new h2d.Text(Assets.fontSmall, flow);
     powerText.textColor = 0xffffff;
     powerText.text = '0';
+
+    timerText = new h2d.Text(Assets.fontSmall, flow);
+    timerText.textColor = 0xffffff;
+    timerText.text = 'Time 0';
   }
 
   override function onResize() {
@@ -48,6 +54,7 @@ class Hud extends dn.Process {
 
   function render() {
     renderPower();
+    renderGameTime();
   }
 
   public function renderPower() {
@@ -57,6 +64,10 @@ class Hud extends dn.Process {
     }
   }
 
+  public function renderGameTime() {
+    timerText.text = 'Time ${level.levelTime}';
+  }
+
   override function postUpdate() {
     super.postUpdate();
 
@@ -64,5 +75,13 @@ class Hud extends dn.Process {
       invalidated = false;
       render();
     }
+  }
+
+  public function hide() {
+    flow.visible = false;
+  }
+
+  public function show() {
+    flow.visible = true;
   }
 }

@@ -1,3 +1,4 @@
+import en.Mermaid;
 import en.enemy.Enemy;
 import en.obstacles.Gate;
 import en.Goal;
@@ -54,9 +55,13 @@ class Level extends dn.Process {
 
   public var data:LDTkProj_Level;
 
+  public var levelTime:Float;
+
   public function new(level:LDTkProj_Level) {
     super(Game.ME);
     data = level;
+    levelTime = 0;
+    Game.ME.hud.show();
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
@@ -88,6 +93,10 @@ class Level extends dn.Process {
 
     for (commander in data.l_Entities.all_Commander) {
       vassalGrp.push(new Commander(commander.cx, commander.cy));
+    }
+
+    for (mermaid in data.l_Entities.all_Mermaid) {
+      vassalGrp.push(new Mermaid(mermaid.cx, mermaid.cy));
     }
 
     for (tree in data.l_Entities.all_Tree) {
@@ -154,6 +163,16 @@ class Level extends dn.Process {
     dn.Process.resizeAll();
   }
 
+  override function update() {
+    super.update();
+    updateLevelTime();
+  }
+
+  public function updateLevelTime() {
+    levelTime = Std.int(framesToSec(ftime));
+    Game.ME.invalidateHud();
+  }
+
   override function postUpdate() {
     super.postUpdate();
 
@@ -163,21 +182,32 @@ class Level extends dn.Process {
     }
   }
 
+  /**
+   * When the level is getting disposed, destroy
+   * all the additional entities. They will be disposed
+   * by the GC.
+   */
   override function onDispose() {
+    // Hide the HUD Unless a new level is started
+    Game.ME.hud.hide();
     super.onDispose();
     if (player != null) {
-      player.dispose();
+      player.destroy();
     }
 
     for (follower in vassalGrp) {
-      follower.dispose();
+      follower.destroy();
     }
     for (el in hazards) {
-      el.dispose();
+      el.destroy();
+    }
+
+    for (goal in goals) {
+      goal.destroy();
     }
 
     for (enemy in enemyGrp) {
-      enemy.dispose();
+      enemy.destroy();
     }
   }
 }
