@@ -69,14 +69,14 @@ class Game extends dn.Process {
   }
 
   // Use the below lines when using LDTk for game creation.
-  public function nextLevel(levelId:Int, startX = -1, startY = -1) {
+  public function nextLevel(levelId:Int) {
     level.destroy();
     // var level = proj.levels[levelId];
     var level = proj.levels.filter((lLevel) ->
       lLevel.identifier.contains('Level_${levelId}'))
       .first();
     if (level != null) {
-      startLevel(level, startX, startY);
+      startLevel(level);
     } else {
       #if debug
       trace('Cannot find level');
@@ -92,8 +92,7 @@ class Game extends dn.Process {
     }
   }
 
-  public function startLevel(ldtkLevel:LDTkProj_Level, startX = -1,
-      startY = -1) {
+  public function startLevel(ldtkLevel:LDTkProj_Level) {
     if (level != null) {
       level.destroy();
     }
