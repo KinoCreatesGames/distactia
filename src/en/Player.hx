@@ -1,5 +1,6 @@
 package en;
 
+import dn.heaps.filter.PixelOutline;
 import en.obstacles.Tree;
 import GameTypes.Facing;
 import GameTypes.Talent;
@@ -48,6 +49,7 @@ class Player extends Entity {
     g.endFill();
     g.x -= 8;
     g.y -= 16;
+    spr.filter = new PixelOutline(0x0, 1);
   }
 
   override function update() {

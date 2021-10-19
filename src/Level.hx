@@ -125,6 +125,12 @@ class Level extends dn.Process {
       .first();
   }
 
+  public function collidedGoal(x:Int, y:Int) {
+    return goals.filter((goal) -> goal.cx == x && goal.cy == y
+      && goal.isAlive())
+      .first();
+  }
+
   /** TRUE if given coords are in level bounds **/
   public inline function isValid(cx, cy)
     return cx >= 0 && cx < cWid && cy >= 0 && cy < cHei;

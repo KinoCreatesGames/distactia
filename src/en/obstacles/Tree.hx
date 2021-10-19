@@ -1,5 +1,7 @@
 package en.obstacles;
 
+import dn.heaps.filter.PixelOutline;
+
 class Tree extends Obstacle {
   public function new(x:Int, y:Int) {
     super(x, y);
@@ -14,5 +16,6 @@ class Tree extends Obstacle {
     g.endFill();
     g.x -= 8;
     g.y -= 16;
+    spr.filter = new PixelOutline(0x0, 1);
   }
 }

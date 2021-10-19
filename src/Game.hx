@@ -69,41 +69,52 @@ class Game extends dn.Process {
   }
 
   // Use the below lines when using LDTk for game creation.
-  // public function nextLevel(levelId:Int, startX = -1, startY = -1) {
-  //   level.destroy();
-  //   // var level = proj.levels[levelId];
-  //   var level = proj.levels.filter((lLevel) ->
-  //     lLevel.identifier.contains('Level_${levelId}'))
-  //     .first();
-  //   if (level != null) {
-  //     startLevel(level, startX, startY);
-  //   } else {
-  //     #if debug
-  //     trace('Cannot find level');
-  //     #end
-  //   }
-  // }
-  // public function reloadCurrentLevel() {
-  //   if (level != null) {
-  //     if (level.data != null) {
-  //       startLevel(Assets.projData.getLevel(level.data.uid));
-  //     }
-  //   }
-  // }
-  // public function startLevel(ldtkLevel:LDTkProj_Level, startX = -1,
-  //     startY = -1) {
-  //   if (level != null) {
-  //     level.destroy();
-  //   }
-  //   fx.clear();
-  //   for (entity in Entity.ALL) {
-  //     entity.destroy();
-  //   }
-  //   garbageCollectEntities();
-  //   // Create new level
-  //   level = new Level(ldtkLevel, startX, startY);
-  //   // Will be using the looping mechanisms
-  // }
+  public function nextLevel(levelId:Int, startX = -1, startY = -1) {
+    level.destroy();
+    // var level = proj.levels[levelId];
+    var level = proj.levels.filter((lLevel) ->
+      lLevel.identifier.contains('Level_${levelId}'))
+      .first();
+    if (level != null) {
+      startLevel(level, startX, startY);
+    } else {
+      #if debug
+      trace('Cannot find level');
+      #end
+    }
+  }
+
+  public function reloadCurrentLevel() {
+    if (level != null) {
+      if (level.data != null) {
+        startLevel(this.proj.getLevel(level.data.uid));
+      }
+    }
+  }
+
+  public function startLevel(ldtkLevel:LDTkProj_Level, startX = -1,
+      startY = -1) {
+    if (level != null) {
+      level.destroy();
+    }
+    fx.clear();
+    for (entity in Entity.ALL) {
+      entity.destroy();
+    }
+    garbageCollectEntities();
+    // Create new level
+    level = new Level(ldtkLevel);
+    // Will be using the looping mechanisms
+  }
+
+  /** Garbage collect any Entity marked for destruction **/
+  function garbageCollectEntities() {
+    if (Entity.GC == null || Entity.GC.length == 0) return;
+
+    for (e in Entity.GC)
+      e.dispose();
+    Entity.GC = [];
+  }
 
   /** Window/app resize event **/
   override function onResize() {
