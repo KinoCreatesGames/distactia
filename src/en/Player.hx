@@ -57,6 +57,7 @@ class Player extends Entity {
     updateControls();
     entityCollissions();
     obstacleCollisions();
+    goalCollisions();
   }
 
   public function updateControls() {
@@ -183,6 +184,14 @@ class Player extends Entity {
         case _:
           // Do nothing
       }
+    }
+  }
+
+  public function goalCollisions() {
+    var goal = level.collidedGoal(cx, cy);
+    if (goal != null) {
+      // Go to the next level and do only next level processing
+      Game.ME.nextLevel();
     }
   }
 }

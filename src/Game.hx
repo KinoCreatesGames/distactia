@@ -69,18 +69,25 @@ class Game extends dn.Process {
   }
 
   // Use the below lines when using LDTk for game creation.
-  public function nextLevel(levelId:Int) {
+  public function nextLevel(levelId:Int = null) {
     level.destroy();
     // var level = proj.levels[levelId];
-    var level = proj.levels.filter((lLevel) ->
-      lLevel.identifier.contains('Level_${levelId}'))
-      .first();
-    if (level != null) {
-      startLevel(level);
-    } else {
-      #if debug
-      trace('Cannot find level');
-      #end
+    if (levelId == null) {
+      var oldLevelId = Std.parseInt(level.data.identifier.replace('Level_',
+        ''));
+      levelId = oldLevelId + 1;
+    }
+    if (levelId != null) {
+      var level = proj.levels.filter((lLevel) ->
+        lLevel.identifier.contains('Level_${levelId}'))
+        .first();
+      if (level != null) {
+        startLevel(level);
+      } else {
+        #if debug
+        trace('Cannot find level');
+        #end
+      }
     }
   }
 
