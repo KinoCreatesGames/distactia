@@ -158,6 +158,8 @@ class Title extends dn.Process {
 
   override function onDispose() {
     super.onDispose();
-    bgm.stop();
+    if (bgm != null) {
+      bgm.stop();
+    }
   }
 }
