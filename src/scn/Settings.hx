@@ -12,6 +12,7 @@ class Settings extends dn.Process {
   var padding:Int;
   var win:h2d.Flow;
   var volumeDisplay:h2d.Text;
+  var transition:ui.transition.FadeToBlack;
 
   public var manager(get, never):Manager;
 
@@ -109,8 +110,14 @@ class Settings extends dn.Process {
   override function update() {
     super.update();
     // Handle the Settings Leave
-    if (ct.isAnyKeyPressed([K.ESCAPE])) {
+    if (ct.isAnyKeyPressed([K.ESCAPE]) && transition == null) {
+      transition = new ui.transition.FadeToBlack();
+    }
+
+    if (transition != null && transition.complete) {
       this.destroy();
+      transition.destroy();
+      new Title();
     }
   }
 
