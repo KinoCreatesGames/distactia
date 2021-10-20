@@ -87,6 +87,33 @@ class Title extends dn.Process {
       newGame.alpha = 1;
     }
 
+    // Settings Screen
+    var settings = new h2d.Text(Assets.fontMedium, win);
+    settings.text = Lang.t._('Settings');
+    settings.textColor = 0xffffff;
+    settings.center();
+    var sInt = new h2d.Interactive(win.outerWidth, newGame.textHeight,
+      settings);
+    // Handles the relocation of the x coordinate thanks to the alignment change
+    sInt.x = settings.getSize().xMin;
+    sInt.onClick = (event) -> {
+      if (bgm != null) {
+        bgm.stop();
+      }
+      hxd.Res.sound.confirm.play();
+      this.destroy();
+      new scn.Settings();
+      complete = true;
+    }
+    sInt.onOver = (event) -> {
+      settings.alpha = 0.5;
+      // Trigger sound
+      hxd.Res.sound.select.play();
+    }
+    ngInt.onOut = (event) -> {
+      settings.alpha = 1;
+    }
+
     var credits = new h2d.Text(Assets.fontMedium, win);
     credits.text = Lang.t._('Credits');
     credits.textColor = 0xffffff;

@@ -50,4 +50,8 @@ class Const {
   public static var DP_FX_FRONT = _inc++;
   public static var DP_TOP = _inc++;
   public static var DP_UI = _inc++;
+
+  // Game Specific Constants
+  // Settings Save File
+  public static inline var SETTINGS:String = 'settings';
 }
