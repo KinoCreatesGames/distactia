@@ -70,7 +70,9 @@ class Title extends dn.Process {
     // Handles the relocation of the x coordinate thanks to the alignment change
     ngInt.x = newGame.getSize().xMin;
     ngInt.onClick = (event) -> {
-      bgm.stop();
+      if (bgm != null) {
+        bgm.stop();
+      }
       hxd.Res.sound.confirm.play();
       // this.destroy();
 
@@ -102,7 +104,9 @@ class Title extends dn.Process {
     crInt.onClick = (event) -> {
       // Go to credits scene
       // Stop music on the start of the next scene
-      bgm.stop();
+      if (bgm != null) {
+        bgm.stop();
+      }
       hxd.Res.sound.confirm.play();
       this.destroy();
       new Credits();
@@ -136,7 +140,7 @@ class Title extends dn.Process {
     if (complete) {
       // var allText = depot.DepotData.Dialogue_Intro.text.map((text) -> text.str);
       // new IntroScene(() -> {
-      //   Game.ME.startInitialGame();
+      Game.ME.startInitialGame();
       // }, allText);
       destroy();
     }

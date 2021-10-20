@@ -40,11 +40,25 @@ class Game extends dn.Process {
 
     camera = new Camera();
     hud = new ui.Hud();
-    level = new Level(proj.all_levels.Level_0);
-    fx = new Fx();
-
+    hud.hide();
+    #if debug
+    startInitialGame();
+    #else
+    // Start on Title Screen
+    new scn.Title();
+    #end
     Process.resizeAll();
     trace(Lang.t._("Game is ready."));
+  }
+
+  /**
+   * Starts initial game when on the Title screen.
+   * Pushes to the first level.
+   */
+  public function startInitialGame() {
+    level = new Level(proj.all_levels.Level_0);
+    hud.show();
+    fx = new Fx();
   }
 
   public inline function invalidateHud() {
@@ -65,7 +79,7 @@ class Game extends dn.Process {
     trace('LDTk file reloaded');
     #else
     #end
-    // reloadCurrentLevel();
+    reloadCurrentLevel();
   }
 
   // Use the below lines when using LDTk for game creation.
@@ -188,7 +202,11 @@ class Game extends dn.Process {
       #end
 
       // Restart
-      if (ca.selectPressed()) Main.ME.startGame();
+      // Reloads the current level in the game.
+      if (ca.selectPressed()) {
+        hxd.Res.sound.confirm.play();
+        reloadCurrentLevel();
+      }
     }
   }
 }

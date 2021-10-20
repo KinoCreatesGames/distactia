@@ -65,7 +65,9 @@ class Hud extends dn.Process {
   }
 
   public function renderGameTime() {
-    timerText.text = 'Time ${level.levelTime}';
+    if (level != null) {
+      timerText.text = 'Time ${level.levelTime}';
+    }
   }
 
   override function postUpdate() {
