@@ -1,5 +1,8 @@
 package en.enemy;
 
+import dn.heaps.filter.PixelOutline;
+import dn.heaps.assets.Aseprite;
+
 class Enemy extends Entity {
   public var pathPoints:Array<tools.Vec2>;
   public var looping:Bool;
@@ -24,12 +27,12 @@ class Enemy extends Entity {
   }
 
   public function setSprite() {
-    var g = new h2d.Graphics(spr);
-    g.beginFill(0xff0000);
-    g.drawRect(0, 0, 16, 16);
-    g.endFill();
-    g.x -= 8;
-    g.y -= 16;
+    var ase = hxd.Res.img.patrol_ase.toAseprite();
+    var patrol = Aseprite.convertToSLib(Const.FPS, ase);
+    patrol.tmod = Game.ME.tmod;
+    spr.set(patrol);
+    spr.anim.playAndLoop('idle');
+    spr.filter = new PixelOutline(0x0, 1);
   }
 
   override function update() {

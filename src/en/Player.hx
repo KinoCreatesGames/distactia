@@ -1,5 +1,6 @@
 package en;
 
+import dn.heaps.assets.Aseprite;
 import dn.heaps.filter.PixelOutline;
 import en.obstacles.Tree;
 import GameTypes.Facing;
@@ -43,12 +44,11 @@ class Player extends Entity {
   }
 
   public function setSprite() {
-    var g = new h2d.Graphics(spr);
-    g.beginFill(0xa0a0ff);
-    g.drawRect(0, 0, 16, 16);
-    g.endFill();
-    g.x -= 8;
-    g.y -= 16;
+    var ase = hxd.Res.img.player_ase.toAseprite();
+    var player = Aseprite.convertToSLib(Const.FPS, ase);
+    player.tmod = Game.ME.tmod;
+    spr.set(player);
+    spr.anim.playAndLoop('idle');
     spr.filter = new PixelOutline(0x0, 1);
   }
 

@@ -1,5 +1,8 @@
 package en;
 
+import dn.heaps.filter.PixelOutline;
+import dn.heaps.assets.Aseprite;
+
 /**
  * Commander that boosts your overal
  * power by 2.
@@ -11,10 +14,11 @@ class Commander extends Vassal {
   }
 
   override function setSprite() {
-    var g = new h2d.Graphics(spr);
-    g.beginFill(0xff4400);
-    g.drawRect(0, 0, 16, 16);
-    g.x -= 8;
-    g.y -= 16;
+    var ase = hxd.Res.img.commander_ase.toAseprite();
+    var commander = Aseprite.convertToSLib(Const.FPS, ase);
+    commander.tmod = Game.ME.tmod;
+    spr.set(commander);
+    spr.anim.playAndLoop('idle');
+    spr.filter = new PixelOutline();
   }
 }
