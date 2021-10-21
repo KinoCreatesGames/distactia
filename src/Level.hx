@@ -116,6 +116,16 @@ class Level extends dn.Process {
     return data.l_AutoBase.getInt(x, y) == 1;
   }
 
+  /**
+   * Water tiles marked to 3.
+   * This will also prevent you from walking on those tiles. 
+   * @param x 
+   * @param y 
+   */
+  public function hasAnyWaterCollision(x:Int, y:Int) {
+    return data.l_AutoBase.getInt(x, y) == 3;
+  }
+
   public function collidedEnemy(x:Int, y:Int) {
     return enemyGrp.filter((enemy) -> enemy.cx == x && enemy.cy == y
       && enemy.isAlive())

@@ -150,7 +150,11 @@
 			"pxOffsetY": 0,
 			"requiredTags": [],
 			"excludedTags": [],
-			"intGridValues": [ { "value": 1, "identifier": "Wall", "color": "#9A9A9A" }, { "value": 2, "identifier": "Grass", "color": "#D8FFAE" } ],
+			"intGridValues": [
+				{ "value": 1, "identifier": "Wall", "color": "#9A9A9A" },
+				{ "value": 2, "identifier": "Grass", "color": "#D8FFAE" },
+				{ "value": 3, "identifier": "Water", "color": "#4FB9E8" }
+			],
 			"autoTilesetDefUid": null,
 			"autoRuleGroups": [],
 			"autoSourceLayerDefUid": null,

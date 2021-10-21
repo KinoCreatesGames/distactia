@@ -104,6 +104,11 @@ class Player extends Entity {
     if (level.hasAnyCollision(x, y)) {
       return false;
     }
+
+    if (level.hasAnyWaterCollision(cx, cy) && talents.contains(SWIM)) {
+      return true;
+    }
+
     return true;
   }
 
