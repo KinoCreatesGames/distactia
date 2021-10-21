@@ -195,4 +195,6 @@ class Player extends Entity {
       Game.ME.nextLevel();
     }
   }
+
+  // TODO: Dispose of the controller access
 }

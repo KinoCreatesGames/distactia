@@ -42,7 +42,8 @@ class Game extends dn.Process {
     hud = new ui.Hud();
     hud.hide();
     #if debug
-    startInitialGame();
+    new scn.Title();
+    // startInitialGame();
     #else
     // Start on Title Screen
     new scn.Title();

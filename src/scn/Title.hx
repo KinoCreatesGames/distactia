@@ -1,5 +1,8 @@
 package scn;
 
+import sdl.Event;
+import hxd.SceneEvents;
+import dn.heaps.Controller.ControllerAccess;
 import hxd.snd.Channel;
 import h2d.Text.Align;
 import h2d.Flow.FlowAlign;
@@ -17,9 +20,18 @@ class Title extends dn.Process {
   public var bgm:Channel;
   public var mask:h2d.Bitmap;
   public var bg:h2d.Bitmap;
+  public var ca:ControllerAccess;
+  public var events:SceneEvents;
+  public var selectionIndex:Int = 0;
+  public var optionList:Array<h2d.Interactive>;
 
   public function new() {
     super(Game.ME);
+    ca = Main.ME.controller.createAccess("title");
+    ca.setLeftDeadZone(0.2);
+    ca.setRightDeadZone(0.2);
+    events = new SceneEvents();
+    optionList = [];
     createRootInLayers(Game.ME.root, Const.DP_UI);
     complete = false;
     mask = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 0.6), root);
@@ -75,7 +87,6 @@ class Title extends dn.Process {
       }
       hxd.Res.sound.confirm.play();
       // this.destroy();
-
       complete = true;
     }
     ngInt.onOver = (event) -> {
@@ -92,7 +103,7 @@ class Title extends dn.Process {
     settings.text = Lang.t._('Settings');
     settings.textColor = 0xffffff;
     settings.center();
-    var sInt = new h2d.Interactive(win.outerWidth, newGame.textHeight,
+    var sInt = new h2d.Interactive(win.outerWidth, settings.textHeight,
       settings);
     // Handles the relocation of the x coordinate thanks to the alignment change
     sInt.x = settings.getSize().xMin;
@@ -103,14 +114,13 @@ class Title extends dn.Process {
       hxd.Res.sound.confirm.play();
       this.destroy();
       new scn.Settings();
-      complete = true;
     }
     sInt.onOver = (event) -> {
       settings.alpha = 0.5;
       // Trigger sound
       hxd.Res.sound.select.play();
     }
-    ngInt.onOut = (event) -> {
+    sInt.onOut = (event) -> {
       settings.alpha = 1;
     }
 
@@ -144,10 +154,12 @@ class Title extends dn.Process {
     exit.text = 'Exit';
     exit.textColor = 0xffffff;
     exit.center();
-    var exitInt = new h2d.Interactive(win.outerWidth, newGame.textHeight, exit);
+    var exitInt = new h2d.Interactive(win.outerWidth, exit.textHeight, exit);
     exitInt.x = exit.getSize().xMin;
     exitInt.onClick = (event) -> {
-      bgm.stop();
+      if (bgm != null) {
+        bgm.stop();
+      }
       hxd.Res.sound.confirm.play();
       this.destroy();
       hxd.System.exit();
@@ -160,16 +172,55 @@ class Title extends dn.Process {
       exit.alpha = 1;
     }
     #end
+    optionList.push(ngInt);
+    optionList.push(sInt);
+    optionList.push(crInt);
+    #if hl
+    optionList.push(exitInt);
+    #end
   }
 
   override public function update() {
     super.update();
+    updateMouseToControls();
     if (complete) {
       // var allText = depot.DepotData.Dialogue_Intro.text.map((text) -> text.str);
       // new IntroScene(() -> {
       Game.ME.startInitialGame();
       // }, allText);
       destroy();
+    }
+  }
+
+  /**
+   * Handles mapping the arrow keys to the mouse interactables.
+   */
+  public function updateMouseToControls() {
+    if (ca.downPressed()) {
+      selectionIndex++;
+      moveSelection();
+    } else if (ca.upPressed()) {
+      selectionIndex--;
+      moveSelection();
+    }
+
+    // If a or b is pressed create synthetic event
+    if (ca.aPressed() || ca.bPressed()) {
+      // Send event to current interactable
+      var currentSelection = optionList[selectionIndex % optionList.length];
+      currentSelection.onClick(new hxd.Event(hxd.Event.EventKind.ERelease,
+        currentSelection.x, currentSelection.y));
+    }
+  }
+
+  public function moveSelection() {
+    var currentSelection = optionList[selectionIndex % optionList.length];
+    // Place Mouse
+    optionList.iter((option) -> {
+      option.onOut(new hxd.Event(EOut, option.x, option.y));
+    });
+    if (currentSelection != null) {
+      currentSelection.onOver(new hxd.Event(hxd.Event.EventKind.EOver));
     }
   }
 
@@ -189,6 +240,7 @@ class Title extends dn.Process {
 
   override function onDispose() {
     super.onDispose();
+    ca.dispose();
     if (bgm != null) {
       bgm.stop();
     }
