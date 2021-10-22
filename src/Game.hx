@@ -42,8 +42,8 @@ class Game extends dn.Process {
     hud = new ui.Hud();
     hud.hide();
     #if debug
-    new scn.Title();
-    // startInitialGame();
+    // new scn.Title();
+    startInitialGame();
     #else
     // Start on Title Screen
     new scn.Title();
@@ -57,7 +57,7 @@ class Game extends dn.Process {
    * Pushes to the first level.
    */
   public function startInitialGame() {
-    level = new Level(proj.all_levels.Level_0);
+    level = new Level(proj.all_levels.Level_4);
     hud.show();
     fx = new Fx();
   }

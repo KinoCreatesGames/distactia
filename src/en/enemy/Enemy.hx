@@ -37,7 +37,9 @@ class Enemy extends Entity {
 
   override function update() {
     super.update();
-    followPath();
+    if (pathPoints.length > 0) {
+      followPath();
+    }
   }
 
   public function followPath() {

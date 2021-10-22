@@ -12,7 +12,6 @@ class Mermaid extends Vassal {
   }
 
   override function setSprite() {
-    super.setSprite();
     var tile = hxd.Res.img.mermaid.toTile();
     var g = new h2d.Graphics(spr);
     spr.filter = new PixelOutline(0x0, 1);

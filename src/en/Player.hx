@@ -20,6 +20,13 @@ class Player extends Entity {
 
   public var talents(get, never):Array<Talent>;
 
+  public var powerBonus(get, never):Int;
+
+  public inline function get_powerBonus() {
+    return vassals.map((vassal) -> vassal.talent == COMMANDER ? 2 : 0)
+      .fold((el, result) -> result + el, 0);
+  }
+
   public var facing:Facing;
   public var lastPrevX:Int;
   public var lastPrevY:Int;
@@ -44,12 +51,12 @@ class Player extends Entity {
   }
 
   public function setSprite() {
-    var ase = hxd.Res.img.player_ase.toAseprite();
+    var ase = hxd.Res.img.demon_lord_ase_small.toAseprite();
     var player = Aseprite.convertToSLib(Const.FPS, ase);
     player.tmod = Game.ME.tmod;
     spr.set(player);
     spr.anim.playAndLoop('idle');
-    spr.filter = new PixelOutline(0x0, 1);
+    // spr.filter = new PixelOutline(0x0, 1);
   }
 
   override function update() {
@@ -105,8 +112,8 @@ class Player extends Entity {
       return false;
     }
 
-    if (level.hasAnyWaterCollision(cx, cy) && talents.contains(SWIM)) {
-      return true;
+    if (level.hasAnyWaterCollision(x, y) && !talents.contains(SWIM)) {
+      return false;
     }
 
     return true;
@@ -150,8 +157,10 @@ class Player extends Entity {
   public function removeFollower() {
     // Remove latest vassal and update current followers
     var vassal = vassals.shift();
+    // Delete them
+    vassal.destroy();
     updateFollowers(cx, cy);
-    power = vassals.length;
+    power = vassals.length * powerBonus;
     updateHUD();
   }
 
@@ -159,7 +168,7 @@ class Player extends Entity {
     vassals.push(vassal);
     vassal.cx = lastPrevX;
     vassal.cy = lastPrevY;
-    power = vassals.length;
+    power = vassals.length * powerBonus;
     updateHUD();
   }
 
