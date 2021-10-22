@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 29,
+	"nextUid": 30,
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -476,6 +476,31 @@
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
+		},
+		{
+			"identifier": "FinalGoal",
+			"uid": 29,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#9EB7EE",
+			"renderMode": "Tile",
+			"showName": true,
+			"tilesetId": 4,
+			"tileId": 17,
+			"tileRenderMode": "FitInside",
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0,
+			"pivotY": 0,
+			"fieldDefs": []
 		}
 	], "tilesets": [
 		{
@@ -494,8 +519,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "1000000000110000000000000",
-				"averageColors": "f99a0000422400008584000000000000accc0000f085f085e964caaa00000000000000000000000000000000000000000000"
+				"opaqueTiles": "1000000000110001100010000",
+				"averageColors": "f99a0000422400008584000000000000accc0000f085f085e964caaa0000f4aff4af000000000000f2af0000000000000000"
 			}
 		}
 	], "enums": [], "externalEnums": [], "levelFields": [] },

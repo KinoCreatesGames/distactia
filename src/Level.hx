@@ -1,3 +1,4 @@
+import en.FinalPortal;
 import en.Mermaid;
 import en.enemy.Enemy;
 import en.obstacles.Gate;
@@ -52,6 +53,7 @@ class Level extends dn.Process {
 
   public var hazards:Array<Obstacle>;
   public var goals:Array<Goal>;
+  public var portals:Array<FinalPortal>;
 
   public var data:LDTkProj_Level;
 
@@ -72,6 +74,7 @@ class Level extends dn.Process {
     hazards = [];
     goals = [];
     enemyGrp = [];
+    portals = [];
   }
 
   public function createEntities() {
@@ -150,6 +153,11 @@ class Level extends dn.Process {
       .first();
   }
 
+  public function collidedFinalPortal(x:Int, y:Int) {
+    return portals.filter((portal) -> portal.cx == x && portal.cy == y
+      && portal.isAlive());
+  }
+
   /** TRUE if given coords are in level bounds **/
   public inline function isValid(cx, cy)
     return cx >= 0 && cx < cWid && cy >= 0 && cy < cHei;
@@ -214,6 +222,10 @@ class Level extends dn.Process {
 
     for (goal in goals) {
       goal.destroy();
+    }
+
+    for (portal in portals) {
+      portal.destroy();
     }
 
     for (enemy in enemyGrp) {
