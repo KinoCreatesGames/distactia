@@ -63,10 +63,10 @@ class Level extends dn.Process {
     super(Game.ME);
     data = level;
     levelTime = 0;
-    Game.ME.hud.show();
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
+    Game.ME.hud.show();
   }
 
   public function createGroups() {
@@ -78,6 +78,22 @@ class Level extends dn.Process {
   }
 
   public function createEntities() {
+    for (tree in data.l_Entities.all_Tree) {
+      hazards.push(new Tree(tree.cx, tree.cy));
+    }
+
+    for (gate in data.l_Entities.all_Gate) {
+      hazards.push(new Gate(gate.cx, gate.cy));
+    }
+
+    for (portal in data.l_Entities.all_FinalGoal) {
+      portals.push(new FinalPortal(portal.cx, portal.cy));
+    }
+
+    for (goal in data.l_Entities.all_Goal) {
+      goals.push(new Goal(goal.cx, goal.cy));
+    }
+
     for (lPlayer in data.l_Entities.all_Player) {
       player = new Player(lPlayer.cx, lPlayer.cy);
     }
@@ -100,18 +116,6 @@ class Level extends dn.Process {
 
     for (mermaid in data.l_Entities.all_Mermaid) {
       vassalGrp.push(new Mermaid(mermaid.cx, mermaid.cy));
-    }
-
-    for (tree in data.l_Entities.all_Tree) {
-      hazards.push(new Tree(tree.cx, tree.cy));
-    }
-
-    for (gate in data.l_Entities.all_Gate) {
-      hazards.push(new Gate(gate.cx, gate.cy));
-    }
-
-    for (goal in data.l_Entities.all_Goal) {
-      goals.push(new Goal(goal.cx, goal.cy));
     }
   }
 
@@ -155,7 +159,8 @@ class Level extends dn.Process {
 
   public function collidedFinalPortal(x:Int, y:Int) {
     return portals.filter((portal) -> portal.cx == x && portal.cy == y
-      && portal.isAlive());
+      && portal.isAlive())
+      .first();
   }
 
   /** TRUE if given coords are in level bounds **/

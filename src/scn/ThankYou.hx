@@ -1,3 +1,5 @@
+package scn;
+
 import ui.transition.FadeToBlack;
 import hxd.res.DynamicText.Key;
 import h2d.Flow.FlowAlign;
@@ -16,11 +18,13 @@ class ThankYou extends dn.Process {
   public var backgroundArt:h2d.Bitmap;
   public var background:h2d.Bitmap;
   public var transition:FadeToBlack;
+  public var exitCredits:Bool;
 
   public function new() {
     super(Game.ME);
     createRootInLayers(Game.ME.root, Const.DP_UI);
     complete = false;
+    exitCredits = false;
     ca = Main.ME.controller.createAccess("ThankYou");
 
     setupThankYou();
@@ -29,7 +33,7 @@ class ThankYou extends dn.Process {
 
   public function setupThankYou() {
     // Add background  + Art
-    background = new h2d.Bitmap(h2d.Tile.fromColor(0xffffff, 1, 1, 1), root);
+    background = new h2d.Bitmap(h2d.Tile.fromColor(0x0, 1, 1, 1), root);
     // var tile = hxd.Res.img.thankyou.toTile();
     // backgroundArt = new h2d.Bitmap(tile, root);
     win = new h2d.Flow(root);
@@ -42,6 +46,12 @@ class ThankYou extends dn.Process {
     win.layout = Vertical;
     win.verticalAlign = FlowAlign.Middle;
     win.alpha = 0;
+
+    // Create Screen Interactable
+    var interactive = new h2d.Interactive(w(), h(), root);
+    interactive.onClick = (_) -> {
+      exitCredits = true;
+    };
     setupText();
   }
 
@@ -74,7 +84,10 @@ class ThankYou extends dn.Process {
     if (win.alpha < 1) {
       win.alpha = M.lerp(win.alpha, 1.2, 0.05);
     }
-    var exitCredits = ca.isKeyboardPressed(K.ESCAPE);
+
+    if (!exitCredits) {
+      exitCredits = ca.isKeyboardPressed(K.ESCAPE);
+    }
     if (exitCredits && transition == null) {
       // new Title();
       transition = new FadeToBlack();

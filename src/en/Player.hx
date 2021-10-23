@@ -65,6 +65,7 @@ class Player extends Entity {
     entityCollissions();
     obstacleCollisions();
     goalCollisions();
+    portalCollisions();
   }
 
   public function updateControls() {
@@ -207,6 +208,14 @@ class Player extends Entity {
     if (goal != null) {
       // Go to the next level and do only next level processing
       Game.ME.nextLevel();
+    }
+  }
+
+  public function portalCollisions() {
+    var portal = level.collidedFinalPortal(cx, cy);
+    if (portal != null) {
+      // Trigger game complete
+      Game.ME.startThankYou();
     }
   }
 

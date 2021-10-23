@@ -57,7 +57,7 @@ class Game extends dn.Process {
    * Pushes to the first level.
    */
   public function startInitialGame() {
-    level = new Level(proj.all_levels.Level_4);
+    level = new Level(proj.all_levels.Level_9);
     hud.show();
     fx = new Fx();
   }
@@ -66,6 +66,12 @@ class Game extends dn.Process {
     if (hud != null && !hud.destroyed) {
       hud.invalidate();
     }
+  }
+
+  public function startThankYou() {
+    // Destroy Level && Start Thank you
+    level.destroy();
+    new scn.ThankYou();
   }
 
   /** CDB file changed on disk**/
