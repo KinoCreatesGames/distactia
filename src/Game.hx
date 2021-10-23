@@ -54,7 +54,7 @@ class Game extends dn.Process {
     new scn.Title();
     #end
     Process.resizeAll();
-    trace(Lang.t._("Game is ready."));
+    // trace(Lang.t._("Game is ready."));
   }
 
   /**
