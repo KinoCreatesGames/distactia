@@ -39,6 +39,7 @@ class Player extends Entity {
 
   public function new(x:Int, y:Int) {
     super(x, y);
+    power = 0;
     setup();
     Game.ME.invalidateHud();
   }

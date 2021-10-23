@@ -1,10 +1,8 @@
 package scn;
 
-import sdl.Event;
 import hxd.SceneEvents;
 import dn.heaps.Controller.ControllerAccess;
 import hxd.snd.Channel;
-import h2d.Text.Align;
 import h2d.Flow.FlowAlign;
 
 class Title extends dn.Process {
