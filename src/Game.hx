@@ -1,3 +1,4 @@
+import ui.transition.FadeToBlack;
 import dn.Process;
 import hxd.Key;
 import dn.heaps.Controller.ControllerAccess;
@@ -24,6 +25,8 @@ class Game extends dn.Process {
   public var hud:ui.Hud;
 
   public var proj:LDTkProj;
+
+  public var transition:ui.transition.FadeToBlack;
 
   public function new() {
     super(Main.ME);
@@ -57,7 +60,7 @@ class Game extends dn.Process {
    * Pushes to the first level.
    */
   public function startInitialGame() {
-    level = new Level(proj.all_levels.Level_9);
+    level = new Level(proj.all_levels.Level_0);
     hud.show();
     fx = new Fx();
   }
@@ -91,6 +94,7 @@ class Game extends dn.Process {
 
   // Use the below lines when using LDTk for game creation.
   public function nextLevel(levelId:Int = null) {
+    // transition = new FadeToBlack();
     level.destroy();
     // var level = proj.levels[levelId];
     if (levelId == null) {
@@ -195,6 +199,9 @@ class Game extends dn.Process {
 
   /** Main loop **/
   override function update() {
+    // if (transition != null && transition.complete) {
+    //   transition.destroy();
+    // }
     super.update();
 
     for (e in Entity.ALL)

@@ -1,3 +1,4 @@
+import ui.transition.FadeToBlack;
 import en.FinalPortal;
 import en.Mermaid;
 import en.enemy.Enemy;
@@ -66,6 +67,7 @@ class Level extends dn.Process {
     createRootInLayers(Game.ME.scroller, Const.DP_BG);
     createGroups();
     createEntities();
+
     Game.ME.hud.show();
   }
 
