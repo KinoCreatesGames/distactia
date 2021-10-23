@@ -173,7 +173,7 @@ class Player extends Entity {
     // Delete them
     vassal.destroy();
     updateFollowers(cx, cy);
-    power = vassals.length * M.iclamp(powerBonus, 0, M.T_INT32_MAX);
+    power = vassals.length * M.iclamp(powerBonus, 1, M.T_INT32_MAX);
     updateHUD();
   }
 
@@ -181,7 +181,7 @@ class Player extends Entity {
     vassals.push(vassal);
     vassal.cx = lastPrevX;
     vassal.cy = lastPrevY;
-    power = vassals.length * M.iclamp(powerBonus, 0, M.T_INT32_MAX);
+    power = vassals.length * M.iclamp(powerBonus, 1, M.T_INT32_MAX);
     hxd.Res.sound.collect_collectible.play();
     updateHUD();
   }
