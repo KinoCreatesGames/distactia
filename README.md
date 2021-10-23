@@ -1,5 +1,9 @@
+# Distactia
+> A simple game made in Heaps for the 2021 HaxeJam. Collect your vassals in order to solve puzzles in the game.
+
 # About
 
+# Deepnight Structure
 Base structure for my games, using **Heaps** framework (https://heaps.io) and **Haxe** language (https://haxe.org).
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/deepnight/gameBase/Test%20JS%20build?label=master)](https://github.com/deepnight/gameBase/actions/workflows/testJsBuild.yml)
