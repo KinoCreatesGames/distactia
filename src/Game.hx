@@ -1,3 +1,4 @@
+import hxd.snd.Channel;
 import ui.transition.FadeToBlack;
 import dn.Process;
 import hxd.Key;
@@ -27,6 +28,7 @@ class Game extends dn.Process {
   public var proj:LDTkProj;
 
   public var transition:ui.transition.FadeToBlack;
+  public var bgm:Channel;
 
   public function new() {
     super(Main.ME);
@@ -45,8 +47,8 @@ class Game extends dn.Process {
     hud = new ui.Hud();
     hud.hide();
     #if debug
-    // new scn.Title();
-    startInitialGame();
+    new scn.Title();
+    // startInitialGame();
     #else
     // Start on Title Screen
     new scn.Title();
@@ -60,6 +62,8 @@ class Game extends dn.Process {
    * Pushes to the first level.
    */
   public function startInitialGame() {
+    // Play Game Loop Music
+    bgm = hxd.Res.music.juhani_stage.play(true, 0.5);
     level = new Level(proj.all_levels.Level_0);
     hud.show();
     fx = new Fx();
@@ -73,7 +77,11 @@ class Game extends dn.Process {
 
   public function startThankYou() {
     // Destroy Level && Start Thank you
+    if (bgm != null) {
+      bgm.stop();
+    }
     level.destroy();
+    hud.hide();
     new scn.ThankYou();
   }
 
@@ -95,6 +103,7 @@ class Game extends dn.Process {
   // Use the below lines when using LDTk for game creation.
   public function nextLevel(levelId:Int = null) {
     // transition = new FadeToBlack();
+    hud.hide();
     level.destroy();
     // var level = proj.levels[levelId];
     if (levelId == null) {

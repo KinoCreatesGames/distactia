@@ -43,6 +43,7 @@ class Settings extends dn.Process {
 
     win.verticalSpacing = 16;
     win.layout = Horizontal;
+    addOptions();
   }
 
   public function addOptions() {

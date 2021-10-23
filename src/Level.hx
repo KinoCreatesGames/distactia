@@ -214,7 +214,6 @@ class Level extends dn.Process {
    */
   override function onDispose() {
     // Hide the HUD Unless a new level is started
-    Game.ME.hud.hide();
     super.onDispose();
     if (player != null) {
       player.destroy();

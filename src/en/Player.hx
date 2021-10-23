@@ -110,10 +110,12 @@ class Player extends Entity {
     }
 
     if (level.hasAnyCollision(x, y)) {
+      hxd.Res.sound.hit_wall.play();
       return false;
     }
 
     if (level.hasAnyWaterCollision(x, y) && !talents.contains(SWIM)) {
+      hxd.Res.sound.hit_wall.play();
       return false;
     }
 
@@ -149,9 +151,19 @@ class Player extends Entity {
     var enemy = level.collidedEnemy(cx, cy);
     if (enemy != null) {
       // Remove latest vassal and lower power
-      removeFollower();
+      takeDamage();
       enemy.destroy();
       Game.ME.camera.shakeS(0.5, 1);
+    }
+  }
+
+  public function takeDamage() {
+    hxd.Res.sound.hit_sfx.play();
+    if (vassals.length > 0) {
+      removeFollower();
+    } else {
+      // Restart Level
+      Game.ME.reloadCurrentLevel();
     }
   }
 
@@ -170,6 +182,7 @@ class Player extends Entity {
     vassal.cx = lastPrevX;
     vassal.cy = lastPrevY;
     power = vassals.length * powerBonus;
+    hxd.Res.sound.collect_collectible.play();
     updateHUD();
   }
 

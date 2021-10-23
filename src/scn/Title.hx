@@ -38,12 +38,14 @@ class Title extends dn.Process {
     root.under(mask);
 
     // Play music
-    if (bgm != null) {
-      // bgm = hxd.Res.music.jkjkke___dream_wav.play(true);
-      #if debug
-      bgm.stop();
-      #end
-    }
+
+    bgm = hxd.Res.music.juhani_title.play(true);
+    #if debug
+    // if (bgm != null) {
+    //   bgm.stop();
+    // }
+    #end
+
     // Start of the title sequence
     setupTitle();
   }
@@ -98,31 +100,31 @@ class Title extends dn.Process {
       newGame.alpha = 1;
     }
 
-    // Settings Screen
-    var settings = new h2d.Text(Assets.fontMedium, win);
-    settings.text = Lang.t._('Settings');
-    settings.textColor = 0xffffff;
-    settings.center();
-    var sInt = new h2d.Interactive(win.outerWidth, settings.textHeight,
-      settings);
-    // Handles the relocation of the x coordinate thanks to the alignment change
-    sInt.x = settings.getSize().xMin;
-    sInt.onClick = (event) -> {
-      if (bgm != null) {
-        bgm.stop();
-      }
-      hxd.Res.sound.confirm.play();
-      this.destroy();
-      new scn.Settings();
-    }
-    sInt.onOver = (event) -> {
-      settings.alpha = 0.5;
-      // Trigger sound
-      hxd.Res.sound.select.play();
-    }
-    sInt.onOut = (event) -> {
-      settings.alpha = 1;
-    }
+    // // Settings Screen
+    // var settings = new h2d.Text(Assets.fontMedium, win);
+    // settings.text = Lang.t._('Settings');
+    // settings.textColor = 0xffffff;
+    // settings.center();
+    // var sInt = new h2d.Interactive(win.outerWidth, settings.textHeight,
+    //   settings);
+    // // Handles the relocation of the x coordinate thanks to the alignment change
+    // sInt.x = settings.getSize().xMin;
+    // sInt.onClick = (event) -> {
+    //   if (bgm != null) {
+    //     bgm.stop();
+    //   }
+    //   hxd.Res.sound.confirm.play();
+    //   this.destroy();
+    //   new scn.Settings();
+    // }
+    // sInt.onOver = (event) -> {
+    //   settings.alpha = 0.5;
+    //   // Trigger sound
+    //   hxd.Res.sound.select.play();
+    // }
+    // sInt.onOut = (event) -> {
+    //   settings.alpha = 1;
+    // }
 
     var credits = new h2d.Text(Assets.fontMedium, win);
     credits.text = Lang.t._('Credits');
@@ -173,7 +175,7 @@ class Title extends dn.Process {
     }
     #end
     optionList.push(ngInt);
-    optionList.push(sInt);
+    // optionList.push(sInt);
     optionList.push(crInt);
     #if hl
     optionList.push(exitInt);
@@ -200,7 +202,7 @@ class Title extends dn.Process {
       selectionIndex++;
       moveSelection();
     } else if (ca.upPressed()) {
-      selectionIndex--;
+      selectionIndex = M.iclamp(selectionIndex - 1, 0, M.T_INT32_MAX);
       moveSelection();
     }
 
